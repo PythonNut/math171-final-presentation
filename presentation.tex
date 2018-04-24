@@ -1,0 +1,126 @@
+%&myformat
+\documentclass[10pt]{beamer}
+\usetheme[progressbar=frametitle]{metropolis}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{commath}
+\usepackage{mathtools}
+\usepackage{tabu}
+\usepackage{booktabs}
+\usepackage{bm}
+\usepackage{xfrac}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{mathrsfs}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{listings}
+\usepackage{hyperref}
+\usetikzlibrary{quotes, angles, intersections}
+\hypersetup{pdfpagemode=FullScreen}
+
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+\DeclareMathOperator{\ob}{ob}
+\tikzcdset{every label/.append style = {font = \small}}
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+
+\title{Category Theory in Type Systems}
+\subtitle{AKA: BUCKLE YOUR SEATBELTS BECAUSE IN THREE SHORT MINUTES I AM GOING TO LEARN YOU A THING I ONLY LEARNED MYSELF HALF AN HOUR AGO.}
+\date{\today}
+\author{Jonathan Hayase}
+\institute{Math 171 -- Abstract Algebra -- Spring 2018}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Review: Categories}
+  \textbf{Recall:}
+  Informally, a category \(\mathcal{C}\) consists of
+  \begin{enumerate}
+  \item class \(\ob(\mathcal C)\) of \textbf{objects};
+  \item class \(\hom(\mathcal C)\) of \textbf{arrows} \(\phi: A \to B\) for objects \(A\) and \(B\);
+  \item a composition operation \(\circ\) on arrows.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Review: Functors}
+  \textbf{Recall:}
+  Informally, a functor\footnote{For simplicity, I am only covering no convariant functors in this presentation.} \(F\) from \(\mathcal A\) to \(\mathcal B\)
+  \begin{enumerate}
+  \item assigns every object in \(\mathcal A\) to an object in \(\mathcal B\),
+  \item assigns every arrow in \(\mathcal A\) to an arrow in \(\mathcal B\)
+  \end{enumerate}
+  such that domains, codomains, compositions, and identities are preserved.
+\end{frame}
+
+\begin{frame}{Category Theory of Type Systems}
+  In programming, systems of types have a natural interpretation as a category!
+
+  Let the \(\mathcal{T}\) be the category of types in a programming language \(L\).
+  \begin{enumerate}
+  \item The objects of \(\mathcal T\) are \textbf{types} (i.e. integers, floats, bools).
+  \item The arrows of \(\mathcal T\) are \(\mathbf{functions}\) which map values of one type to those of another.
+  \item The operation \(\circ\) is just regular function composition.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Functions as composable arrows}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzcd}[column sep={2.5cm,between origins},row sep={2.5cm,between origins}]
+      \texttt{integer} \arrow[rr, "f"] \arrow[rrdd, "g \circ f"] \arrow[dd, "h \circ g\circ f"] \arrow[loop above, "id"] &  & \texttt{bool} \arrow[dd, "g"] \arrow[loop above, "id"]\\
+      &  &  \\
+      \texttt{char} \arrow[loop below, "id"] &  & \texttt{string} \arrow[ll, "h"] \arrow[loop below, "id"]
+    \end{tikzcd}
+    \caption{A commutative diagram of three functions: \(f\), \(g\), and \(h\).}
+  \end{figure}
+\end{frame}
+
+\section{So now what?}
+
+\begin{frame}{Collections}
+  \begin{itemize}
+  \item So far, we've only discussed ``primitive'' types.
+  \item What about lists, sets, matrices, etc.?
+  \item For now, consider \texttt{list<T>}, a type representing ordered collections of objects of type \texttt{T}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{A bold claim}
+  \begin{center}
+    \Huge{\texttt{list} is a functor}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Explanation}
+  \begin{enumerate}
+  \item \texttt{list} is an endofunctor (i.e. it maps \(\mathcal{T}\) to itself).
+  \item It's pretty clear to see that \texttt{list} maps a type \(T \in \mathcal{T}\) to the list type containing elements of type \(T\), also in \(\mathcal T\).
+  \item But what do we assign to the arrows of \(\mathcal T\)?
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{``Mapping''}
+  \begin{enumerate}
+  \item[Q:] Given an arrow (i.e. function) from type \texttt{A} to type \texttt{B}, how can we define a function from \texttt{list<A>} to \texttt{list<B>}?
+  \item[A:] By ``mapping''\footnote{Not to be confused with mapping in mathematics.}
+
+    \begin{lstlisting}
+      map(int, ["1", "2", "3"]) == [1, 2, 3]
+    \end{lstlisting}
+  In this example, given \(\texttt{int} : \texttt{string} \to \texttt{integer}\) we can define a new arrow \(\texttt{mapint} : \texttt{list<string>} \to \texttt{list<integer>}\).
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Functors are everywhere!}
+  \begin{itemize}
+  \item Collection types such as lists, vector, matrices, etc.
+  \item Nullable types like \texttt{std::optional} in \texttt{C++}, \texttt{Maybe} in Haskell, and \texttt{T?} in \texttt{C\#}.
+  \item And more!
+  \end{itemize}
+\end{frame}
+
+\section{Just the beginning...}
+
+\end{document}
