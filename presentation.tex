@@ -40,7 +40,7 @@
   \begin{enumerate}
   \item class \(\ob(\mathcal C)\) of \textbf{objects};
   \item class \(\hom(\mathcal C)\) of \textbf{arrows} \(\phi: A \to B\) for objects \(A\) and \(B\);
-  \item a composition operation \(\circ\) on arrows.
+  \item a ``well behaved'' composition operation \(\circ\) on arrows.
   \end{enumerate}
 \end{frame}
 
@@ -55,7 +55,7 @@
 \end{frame}
 
 \begin{frame}{Category Theory of Type Systems}
-  In programming, systems of types have a natural interpretation as a category!
+  In programming, type systems have a natural interpretation as a category!
 
   Let the \(\mathcal{T}\) be the category of types in a programming language \(L\).
   \begin{enumerate}
@@ -83,26 +83,26 @@
   \begin{itemize}
   \item So far, we've only discussed ``primitive'' types.
   \item What about lists, sets, matrices, etc.?
-  \item For now, consider \texttt{list<T>}, a type representing ordered collections of objects of type \texttt{T}.
+  \item For now, consider \texttt{list<E>}, a type representing ordered collections of objects of type \texttt{E}.
   \end{itemize}
 \end{frame}
 
 \begin{frame}{A bold claim}
   \begin{center}
-    \Huge{\texttt{list} is a functor}
+    \Huge{\texttt{list} is a functor}.
   \end{center}
 \end{frame}
 
 \begin{frame}{Explanation}
   \begin{enumerate}
   \item \texttt{list} is an endofunctor (i.e. it maps \(\mathcal{T}\) to itself).
-  \item It's pretty clear to see that \texttt{list} maps a type \(T \in \mathcal{T}\) to the list type containing elements of type \(T\), also in \(\mathcal T\).
+  \item It's pretty clear to see that \texttt{list} maps a type \(E \in \mathcal{T}\) to the list type containing elements of type \(E\), also in \(\mathcal T\).
   \item But what do we assign to the arrows of \(\mathcal T\)?
   \end{enumerate}
 \end{frame}
 
 \begin{frame}[fragile]{``Mapping''}
-  \begin{enumerate}
+  \begin{enumerate}[<+- | alert@+>]
   \item[Q:] Given an arrow (i.e. function) from type \texttt{A} to type \texttt{B}, how can we define a function from \texttt{list<A>} to \texttt{list<B>}?
   \item[A:] By ``mapping''\footnote{Not to be confused with mapping in mathematics.}
 
